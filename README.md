@@ -3,43 +3,33 @@ Prepare datasets
 ===
 Prepare your own dataset (HR and LR images) and split it into train/val/test data, the LR images are achieved by bicubic down-sample.
 
+Prepare json file for dataset
+===
+Get the train.json, val.json and test.json by running ./datasets/make_json_rsdata.py
+
+
 Train
 ===
-Use the following command to train the network:
-```
-python runner.py
-        --gpu [gpu_id]\
-        --phase 'train'\
-        --scale [2/3/4]\
-        --dataroot [dataset root]\
-        --out [output path]
-```
+settings in config.py
 
-Use the following command to resume training the network:
-```
-python runner.py 
-        --gpu [gpu_id]\
-        --phase 'resume'\
-        --weights './ckpt/IGNN_x[2/3/4].pth'\
-        --scale [2/3/4]\
-        --dataroot [dataset root]\
-        --out [output path]
-```
-You can also use the following simple command with different settings in config.py:
-```
-python runner.py
-```
+        __NETWORK.PHASE='train'
+        __C.DATASET.DATASET_TRAIN_NAME          = 'rsdata_train'
+Run runner.py
+
+Resume
+===
+settings in config.py
+
+        __NETWORK.PHASE='resume'
+        __C.CONST.WEIGHTS = './output/tb_log/DLGNN/checkpoints/best-ckpt.pth'  #model which you want to continue to train
+        __C.DATASET.DATASET_TRAIN_NAME          = 'rsdata_train'
+Run runner.py
 
 Test
 ===
-Use the following command to test the network:
-```
-python runner.py \
-        --gpu [gpu_id]\
-        --phase 'test'\
-        --weights './ckpt/IGNN_x[2/3/4].pth'\
-        --scale [2/3/4]\
-        --demopath [test folder path]\
-        --testname 'Demo'\
-        --out [output path]
-```
+settings in config.py
+
+        __NETWORK.PHASE='test'
+        __C.CONST.WEIGHTS = './output/tb_log/DLGNN/checkpoints/best-ckpt.pth'  #test model
+        __C.DATASET.DATASET_TRAIN_NAME          = 'rsdata_test'
+Run runner.py
